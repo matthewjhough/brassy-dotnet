@@ -4,10 +4,17 @@ using brassy_api.Operations;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace brassy_api.Controllers {
+
     [Route ("graphql")]
     public class GraphQLController : Controller {
+        private readonly ILogger _logger;
+
+        public GraphQLController (ILogger<GraphQLController> logger) {
+            _logger = logger;
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post ([FromBody] GraphQLQuery query) {
@@ -20,8 +27,11 @@ namespace brassy_api.Controllers {
             }).ConfigureAwait (false);
 
             if (result.Errors?.Count > 0) {
+                _logger.LogError ($"[:::Controller:::] Failed: {result.Query}");
                 return BadRequest ();
             }
+
+            _logger.LogInformation ($"[:::Controller:::] Success: {result.Query}");
 
             return Ok (result);
         }
