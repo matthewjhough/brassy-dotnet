@@ -31,8 +31,6 @@ namespace brassy_api.Controllers {
                 return BadRequest ();
             }
 
-            _logger.LogInformation ($"[:::Controller:::] Success: {result.Query}");
-
             return Ok (result);
         }
     }
