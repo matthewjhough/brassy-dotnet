@@ -8,17 +8,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace brassy_api
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
+namespace brassy_api {
+    public class Program {
+        public static void Main (string[] args) {
+            CreateWebHostBuilder (args).Build ().Run ();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder (string[] args) =>
+            WebHost.CreateDefaultBuilder (args)
+            .UseStartup<Startup> ();
     }
 }
