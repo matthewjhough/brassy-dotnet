@@ -32,7 +32,6 @@ namespace brassy_api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
-            // services.AddTransient<DroidType> ();
             services.AddTransient<DroidQuery> ();
             services.AddTransient<IDroidRepository, DroidRepository> ();
             services.AddMvc ();

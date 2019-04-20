@@ -11,14 +11,15 @@ namespace brassy_api.Controllers {
     [Route ("graphql")]
     public class GraphQLController : Controller {
         private readonly ILogger _logger;
-
-        public GraphQLController (ILogger<GraphQLController> logger) {
+        private DroidQuery _droidQuery { get; set; }
+        public GraphQLController (DroidQuery droidQuery, ILogger<GraphQLController> logger) {
             _logger = logger;
+            _droidQuery = droidQuery;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post ([FromBody] GraphQLQuery query) {
-            var schema = new Schema { Query = new DroidQuery (new DroidRepository ()) };
+            var schema = new Schema { Query = _droidQuery };
 
             var result = await new DocumentExecuter ().ExecuteAsync (_ => {
                 _.Schema = schema;
