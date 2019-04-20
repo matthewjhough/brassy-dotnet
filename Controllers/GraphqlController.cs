@@ -18,7 +18,7 @@ namespace brassy_api.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> Post ([FromBody] GraphQLQuery query) {
-            var schema = new Schema { Query = new DroidQuery () };
+            var schema = new Schema { Query = new DroidQuery (new DroidRepository ()) };
 
             var result = await new DocumentExecuter ().ExecuteAsync (_ => {
                 _.Schema = schema;

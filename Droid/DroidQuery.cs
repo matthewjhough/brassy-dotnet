@@ -4,10 +4,12 @@ using GraphQL.Types;
 
 namespace brassy_api.Droid {
     public class DroidQuery : ObjectGraphType {
-        public DroidQuery () {
+
+        private IDroidRepository _droidRepository { get; set; }
+        public DroidQuery (IDroidRepository _droidRepository) {
             Field<DroidType> (
                 "droid",
-                resolve : context => new DroidModel { Id = 1, Name = "R2-D2" }
+                resolve : context => _droidRepository.Get (1)
             );
         }
     }
