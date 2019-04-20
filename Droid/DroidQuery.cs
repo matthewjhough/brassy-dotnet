@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using brassy_api.Operations;
 using GraphQL.Types;
 

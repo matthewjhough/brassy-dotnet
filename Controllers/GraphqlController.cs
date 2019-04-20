@@ -28,6 +28,7 @@ namespace brassy_api.Controllers {
 
             if (result.Errors?.Count > 0) {
                 _logger.LogError ($"[:::Controller:::] Failed: {result.Query}");
+                _logger.LogError ($"[:::Controller:::] Error: {result.Errors.AsDictionary()}");
                 return BadRequest ();
             }
 
