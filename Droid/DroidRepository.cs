@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace brassy_api.Droid {
     public class DroidRepository : IDroidRepository {
-        private List<DroidModel> _droids = new List<DroidModel> {
-            new DroidModel { Id = 1, Name = "R2-D2" }
-        };
+        private DroidContext _db { get; set; }
+        public DroidRepository (DroidContext db) {
+            _db = db;
+        }
         public Task<DroidModel> Get (int id) {
-            return Task.FromResult (_droids.FirstOrDefault (droid => droid.Id == id));
+            return _db.Droids.FirstOrDefaultAsync (droid => droid.Id == id);
         }
     }
 }
