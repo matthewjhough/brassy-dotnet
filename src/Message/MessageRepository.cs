@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using brassy_api.src.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace brassy_api.src.Message {
     public class MessageRepository : IMessageRepository {
-        private MessageContext _db { get; set; }
+        private BrassyContext _db { get; set; }
         private readonly ILogger _logger;
-        public MessageRepository (MessageContext db, ILogger<MessageRepository> logger) {
+        public MessageRepository (BrassyContext db, ILogger<MessageRepository> logger) {
             _db = db;
             _logger = logger;
         }
