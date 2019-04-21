@@ -5,7 +5,7 @@ var output = './wwwroot';
 
 module.exports = {
 	entry: {
-		bundle: './Views/GraphQL/app.js',
+		bundle: './src/Views/GraphQL/app.js',
 	},
 
 	output: {

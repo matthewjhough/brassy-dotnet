@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using brassy_api.src.Droid;
 using brassy_api.src.Message;
 using brassy_api.src.Operations;
 using GraphiQl;
@@ -37,15 +36,14 @@ namespace brassy_api {
         public void ConfigureServices (IServiceCollection services) {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
             services.AddTransient<QueryResolver> ();
-            services.AddTransient<IDroidRepository, DroidRepository> ();
             services.AddTransient<IMessageRepository, MessageRepository> ();
-            services.AddDbContext<DroidContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
+            // services.AddDbContext<DroidContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
             services.AddDbContext<MessageContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
             services.AddMvc ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DroidContext db) {
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, MessageContext db) {
             loggerFactory.AddConsole (Configuration.GetSection ("Logging"));
             loggerFactory.AddDebug ();
             app.UseGraphiQl ();
