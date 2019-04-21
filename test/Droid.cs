@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace Tests {
+namespace test {
     public class Droid { }
 }
