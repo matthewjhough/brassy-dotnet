@@ -3,7 +3,6 @@ using GraphQL.Types;
 
 namespace brassy_api.Operations {
     public class QueryResolver : ObjectGraphType {
-
         public QueryResolver (IDroidRepository _droidRepository) {
             Field<DroidType> (
                 "droid",
