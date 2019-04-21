@@ -5,6 +5,7 @@ using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace brassy_api.Controllers {
 
@@ -28,16 +29,18 @@ namespace brassy_api.Controllers {
             }).ConfigureAwait (false);
 
             if (result.Errors?.Count > 0) {
-                _logger.LogError ($"[:::Controller:::] Failed: {result.Query}");
-                _logger.LogError ($"[:::Controller:::] Error: {result.Errors.AsDictionary()}");
-                return BadRequest ();
+                _logger.LogError ("GraphQL errors: {0}", result.Errors);
+                return BadRequest (result);
             }
+
+            _logger.LogDebug ("GraphQL execution result: {result}", JsonConvert.SerializeObject (result.Data));
 
             return Ok (result);
         }
 
         [HttpGet]
         public IActionResult Index () {
+            _logger.LogInformation ("Got request for GraphiQL. Sending GUI back");
             return View ();
         }
     }
