@@ -35,14 +35,12 @@ namespace brassy_api {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
-            var connection = Configuration["ConnectionStrings:BrassyDatabaseConnection"];
-
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
             services.AddTransient<QueryResolver> ();
             services.AddTransient<IDroidRepository, DroidRepository> ();
             services.AddTransient<IMessageRepository, MessageRepository> ();
-            services.AddDbContext<DroidContext> (options => options.UseSqlServer (connection));
-            services.AddDbContext<MessageContext> (options => options.UseSqlServer (connection));
+            services.AddDbContext<DroidContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
+            services.AddDbContext<MessageContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
             services.AddMvc ();
         }
 
