@@ -39,7 +39,7 @@ namespace brassy_api.src.Controllers {
 
         [HttpGet]
         public IActionResult Index () {
-            _logger.LogInformation ("Got request for GraphiQL. Sending GUI back");
+            _logger.LogInformation ("Received request for GraphiQL. Sending GUI back");
             return View ();
         }
     }
