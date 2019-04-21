@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using brassy_api.Droid;
 using brassy_api.Operations;
 using GraphQL;
 using GraphQL.Types;
@@ -12,15 +11,15 @@ namespace brassy_api.Controllers {
     [Route ("graphql")]
     public class GraphQLController : Controller {
         private readonly ILogger _logger;
-        private DroidQuery _droidQuery { get; set; }
-        public GraphQLController (DroidQuery droidQuery, ILogger<GraphQLController> logger) {
+        private QueryResolver _queryResolver { get; set; }
+        public GraphQLController (QueryResolver queryResolver, ILogger<GraphQLController> logger) {
             _logger = logger;
-            _droidQuery = droidQuery;
+            _queryResolver = queryResolver;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post ([FromBody] GraphQLQuery query) {
-            var schema = new Schema { Query = _droidQuery };
+            var schema = new Schema { Query = _queryResolver };
 
             var result = await new DocumentExecuter ().ExecuteAsync (_ => {
                 _.Schema = schema;

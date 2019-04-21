@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using brassy_api.Droid;
+using brassy_api.Operations;
 using GraphiQl;
 using GraphQL;
 using GraphQL.Types;
@@ -34,7 +35,7 @@ namespace brassy_api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
-            services.AddTransient<DroidQuery> ();
+            services.AddTransient<QueryResolver> ();
             services.AddTransient<IDroidRepository, DroidRepository> ();
             services.AddDbContext<DroidContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
             services.AddMvc ();
