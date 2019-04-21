@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace brassy_api.Operations {
+namespace brassy_api.src.Operations {
     public class GraphQLQuery {
         public string OperationName { get; set; }
         public string NamedQuery { get; set; }

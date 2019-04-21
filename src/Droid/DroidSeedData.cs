@@ -1,7 +1,7 @@
 using System.Linq;
 using Microsoft.Extensions.Logging;
 
-namespace brassy_api.Droid {
+namespace brassy_api.src.Droid {
     public static class DroidSeedData {
         public static void EnsureSeedData (this DroidContext db) {
             db._logger.LogInformation ("Seeding Database");

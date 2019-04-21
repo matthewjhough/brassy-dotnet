@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using brassy_api.Droid;
-using brassy_api.Operations;
+using brassy_api.src.Droid;
+using brassy_api.src.Operations;
 using GraphiQl;
 using GraphQL;
 using GraphQL.Types;

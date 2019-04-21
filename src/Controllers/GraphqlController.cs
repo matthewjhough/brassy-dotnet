@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
-using brassy_api.Operations;
+using brassy_api.src.Operations;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace brassy_api.Controllers {
+namespace brassy_api.src.Controllers {
 
     [Route ("graphql")]
     public class GraphQLController : Controller {

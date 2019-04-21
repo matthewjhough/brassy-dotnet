@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace brassy_api.Droid {
+namespace brassy_api.src.Droid {
     public class DroidRepository : IDroidRepository {
         private DroidContext _db { get; set; }
         private readonly ILogger _logger;
