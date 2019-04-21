@@ -5,7 +5,6 @@ namespace brassy_api.Droid {
         public DroidContext (DbContextOptions options) : base (options) {
             Database.EnsureCreated ();
         }
-
         public DbSet<DroidModel> Droids { get; set; }
     }
 }
