@@ -14,7 +14,8 @@ namespace brassy_api.src.Droid {
         }
         public Task<DroidModel> Get (int id) {
             _logger.LogInformation ("Get droid with id = {id}", id);
-            return _db.Droids.FirstOrDefaultAsync (droid => droid.Id == id);
+            var result = _db.Droids.FirstOrDefaultAsync (droid => droid.Id == id);
+            return result;
         }
     }
 }
