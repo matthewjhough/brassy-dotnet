@@ -35,5 +35,11 @@ namespace brassy_api.Controllers {
 
             return Ok (result);
         }
+
+        [HttpGet]
+        public IActionResult Index () {
+            return View ();
+        }
     }
+
 }
