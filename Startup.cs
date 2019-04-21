@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using brassy_api.Droid;
+using GraphiQl;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,7 @@ namespace brassy_api {
         public void Configure (IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, DroidContext db) {
             loggerFactory.AddConsole (Configuration.GetSection ("Logging"));
             loggerFactory.AddDebug ();
+            app.UseGraphiQl ();
             app.UseStaticFiles ();
             app.UseMvc ();
 

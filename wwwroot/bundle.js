@@ -70,8 +70,10 @@
 
 	function graphQLFetcher(graphQLParams) {
 		return (0, _isomorphicFetch2['default'])(window.location.origin + '/graphql', {
-			method: 'post',
-			headers: { 'Content-Type': 'application/json' },
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
 			body: JSON.stringify(graphQLParams)
 		}).then(function (response) {
 			return response.json();
