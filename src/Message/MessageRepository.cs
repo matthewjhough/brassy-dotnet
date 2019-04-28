@@ -18,7 +18,7 @@ namespace brassy_api.src.Message {
         public async Task<IEnumerable<MessageModel>> Get () {
             _logger.LogInformation ("Getting all messages...");
             var messages = await _db.Messages.ToListAsync ();
-            var formattedMessages = MessageRepository.FormatMessages (messages);
+            var formattedMessages = FormatMessages (messages);
 
             return formattedMessages;
         }
@@ -42,7 +42,7 @@ namespace brassy_api.src.Message {
                 } else if (msg.Mood == MoodModel.NEUTRAL) {
                     msg.Content = msg.Content.ToLower ();
                 } else if (msg.Mood == MoodModel.BORED) {
-                    msg.Content = MessageRepository.RandomlyCapitalize (msg.Content);
+                    msg.Content = RandomlyCapitalize (msg.Content);
                 }
 
                 return msg;
