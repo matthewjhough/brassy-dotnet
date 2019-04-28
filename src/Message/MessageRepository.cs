@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using brassy_api.src.Data;
+using brassy_api.src.Mood;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -17,7 +18,30 @@ namespace brassy_api.src.Message {
         public async Task<IEnumerable<MessageModel>> Get () {
             _logger.LogInformation ("Getting all messages...");
             var messages = await _db.Messages.ToListAsync ();
-            return messages;
+            var modifiedMessages = messages.Select (msg => {
+                if (msg.Mood == MoodModel.ANGRY) {
+                    msg.Content = msg.Content.ToUpper ();
+                } else if (msg.Mood == MoodModel.NEUTRAL) {
+                    msg.Content = msg.Content.ToLower ();
+                } else if (msg.Mood == MoodModel.BORED) {
+                    string newString = "";
+                    for (var i = 0; i < msg.Content.Length; i++) {
+                        var random = new Random ();
+                        newString += random.Next (100) < 40 ?
+                            msg.Content[i]
+                            .ToString ()
+                            .ToLower () :
+                            msg.Content[i]
+                            .ToString ()
+                            .ToUpper ();
+                    }
+                    msg.Content = newString;
+                }
+
+                return msg;
+            });
+
+            return modifiedMessages;
         }
 
         public async Task<MessageModel> AddMessage (MessageModel message) {
