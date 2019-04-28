@@ -11,9 +11,7 @@ namespace brassy_api.src.Data {
 
                 var message = new MessageModel {
                     Id = "zfs0-2adf",
-                    Content = "Test Seed Message",
-                    SessionId = "123",
-                    UserId = "1"
+                    Content = "Test Seed Message"
                 };
 
                 db.Messages.Add (message);
