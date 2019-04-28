@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using brassy_api.src.Message;
+using brassy_api.src.Mood;
 using Microsoft.Extensions.Logging;
 
 namespace brassy_api.src.Data {
@@ -12,7 +13,8 @@ namespace brassy_api.src.Data {
 
                 var message = new MessageModel {
                     Id = Guid.NewGuid ().ToString (),
-                    Content = "Test Seed Message"
+                    Content = "Test Seed Message",
+                    Mood = MoodModel.NEUTRAL
                 };
 
                 db.Messages.Add (message);
