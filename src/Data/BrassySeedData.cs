@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using brassy_api.src.Message;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,7 @@ namespace brassy_api.src.Data {
                 db._logger.LogInformation ("Seeding Messages");
 
                 var message = new MessageModel {
-                    Id = "zfs0-2adf",
+                    Id = Guid.NewGuid ().ToString (),
                     Content = "Test Seed Message"
                 };
 

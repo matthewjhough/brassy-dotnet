@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,13 @@ namespace brassy_api.src.Message {
             _logger.LogInformation ("Getting all messages...");
             var messages = await _db.Messages.ToListAsync ();
             return messages;
+        }
+
+        public async Task<MessageModel> AddMessage (MessageModel message) {
+            message.Id = Guid.NewGuid ().ToString ();
+            var addedMessage = await _db.Messages.AddAsync (message);
+            await _db.SaveChangesAsync ();
+            return addedMessage.Entity;
         }
     }
 }

@@ -11,20 +11,25 @@ namespace brassy_api.src.Controllers {
     [Route ("graphql")]
     public class GraphQLController : Controller {
         private readonly ILogger _logger;
-        private QueryResolver _queryResolver { get; set; }
-        public GraphQLController (QueryResolver queryResolver, ILogger<GraphQLController> logger) {
+        private Query _queryResolver { get; set; }
+        private Mutation _mutationResolver { get; set; }
+        public GraphQLController (
+            Query queryResolver,
+            Mutation mutationResolver,
+            ILogger<GraphQLController> logger
+        ) {
             _logger = logger;
             _queryResolver = queryResolver;
+            _mutationResolver = mutationResolver;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post ([FromBody] GraphQLQuery query) {
-            var schema = new Schema { Query = _queryResolver };
+            var schema = new Schema { Query = _queryResolver, Mutation = _mutationResolver };
 
             var result = await new DocumentExecuter ().ExecuteAsync (_ => {
                 _.Schema = schema;
                 _.Query = query.Query;
-
             }).ConfigureAwait (false);
 
             if (result.Errors?.Count > 0) {

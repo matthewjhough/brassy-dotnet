@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using brassy_api.src.Data;
 using brassy_api.src.Message;
+using brassy_api.src.Mood;
 using brassy_api.src.Operations;
 using GraphiQl;
 using GraphQL;
@@ -36,8 +37,11 @@ namespace brassy_api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
-            services.AddTransient<QueryResolver> ();
+            services.AddTransient<Query> ();
+            services.AddTransient<Mutation> ();
             services.AddTransient<IMessageRepository, MessageRepository> ();
+            services.AddSingleton<MessageInputType> ();
+            services.AddSingleton<MoodType> ();
             services.AddDbContext<BrassyContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
             services.AddMvc ();
         }

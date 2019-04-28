@@ -4,5 +4,6 @@ using System.Threading.Tasks;
 namespace brassy_api.src.Message {
     public interface IMessageRepository {
         Task<IEnumerable<MessageModel>> Get ();
+        Task<MessageModel> AddMessage (MessageModel message);
     }
 }
