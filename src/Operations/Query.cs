@@ -9,7 +9,7 @@ namespace brassy_api.src.Operations {
             Field<ListGraphType<MessageType>> (
                 "messages",
                 "A list of all messages sent.",
-                resolve : context => _messageRepository.Get ()
+                resolve : context => _messageRepository.AllMessages ()
             );
             Field<ListGraphType<MoodType>> (
                 "moods",

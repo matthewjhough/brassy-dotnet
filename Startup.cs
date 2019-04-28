@@ -39,6 +39,7 @@ namespace brassy_api {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
             services.AddTransient<Query> ();
             services.AddTransient<Mutation> ();
+            services.AddTransient<Subscription> ();
             services.AddTransient<IMessageRepository, MessageRepository> ();
             services.AddSingleton<MessageInputType> ();
             services.AddSingleton<MoodType> ();
