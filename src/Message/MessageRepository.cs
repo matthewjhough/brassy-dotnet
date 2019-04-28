@@ -18,7 +18,7 @@ namespace brassy_api.src.Message {
         public async Task<IEnumerable<MessageModel>> Get () {
             _logger.LogInformation ("Getting all messages...");
             var messages = await _db.Messages.ToListAsync ();
-            var formattedMessages = FormatMessages (messages);
+            var formattedMessages = FormatMessages (messages).OrderByDescending (msg => msg.CreatedAt);
 
             return formattedMessages;
         }
@@ -36,17 +36,23 @@ namespace brassy_api.src.Message {
         /// <param name="messages"></param>
         /// <returns></returns>
         public static IEnumerable<MessageModel> FormatMessages (IEnumerable<MessageModel> messages) {
-            return messages.Select (msg => {
-                if (msg.Mood == MoodModel.ANGRY) {
-                    msg.Content = msg.Content.ToUpper ();
-                } else if (msg.Mood == MoodModel.NEUTRAL) {
-                    msg.Content = msg.Content.ToLower ();
-                } else if (msg.Mood == MoodModel.BORED) {
-                    msg.Content = RandomlyCapitalize (msg.Content);
-                }
+            return messages.Select (msg => AddMoodFormat (msg));
+        }
 
-                return msg;
-            });
+        /// <summary>
+        /// Takes message, and applies mood modifiers.
+        /// </summary>
+        /// <param name="message">MoodModel</param>
+        /// <returns>MoodModel with content string formatted.</returns>
+        public static MessageModel AddMoodFormat (MessageModel message) {
+            if (message.Mood == MoodModel.ANGRY) {
+                message.Content = message.Content.ToUpper ();
+            } else if (message.Mood == MoodModel.NEUTRAL) {
+                message.Content = message.Content.ToLower ();
+            } else if (message.Mood == MoodModel.BORED) {
+                message.Content = RandomlyCapitalize (message.Content);
+            }
+            return message;
         }
 
         /// <summary>

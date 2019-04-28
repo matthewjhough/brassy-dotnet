@@ -5,5 +5,6 @@ namespace brassy_api.src.Message {
         public string Id { get; set; }
         public string Content { get; set; }
         public MoodModel Mood { get; set; }
+        public long CreatedAt { get; set; }
     }
 }

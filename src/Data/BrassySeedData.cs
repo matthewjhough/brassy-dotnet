@@ -10,11 +10,14 @@ namespace brassy_api.src.Data {
             db._logger.LogInformation ("Seeding Database");
             if (!db.Messages.Any ()) {
                 db._logger.LogInformation ("Seeding Messages");
+                long dateticks = DateTime.Now.Ticks;
+                long datemilliseconds = dateticks / TimeSpan.TicksPerMillisecond;
 
                 var message = new MessageModel {
                     Id = Guid.NewGuid ().ToString (),
                     Content = "Test Seed Message",
-                    Mood = MoodModel.NEUTRAL
+                    Mood = MoodModel.ENGAGED,
+                    CreatedAt = datemilliseconds
                 };
 
                 db.Messages.Add (message);
