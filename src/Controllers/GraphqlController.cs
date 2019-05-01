@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using brassy_api.src.Message;
 using brassy_api.src.Operations;
 using GraphQL;
 using GraphQL.Types;
@@ -11,28 +12,18 @@ namespace brassy_api.src.Controllers {
     [Route ("graphql")]
     public class GraphQLController : Controller {
         private readonly ILogger _logger;
-        private Query _queryResolver { get; set; }
-        private Mutation _mutationResolver { get; set; }
-        private Subscription _subscriptionResolver { get; set; }
+        private IMessageRepository _messageRepository;
         public GraphQLController (
-            Query query,
-            Mutation mutation,
-            Subscription subscription,
+            IMessageRepository messageRepository,
             ILogger<GraphQLController> logger
         ) {
             _logger = logger;
-            _queryResolver = query;
-            _mutationResolver = mutation;
-            _subscriptionResolver = subscription;
+            _messageRepository = messageRepository;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post ([FromBody] GraphQLQuery query) {
-            var schema = new Schema {
-                Query = _queryResolver,
-                Mutation = _mutationResolver,
-                Subscription = _subscriptionResolver
-            };
+            MessageSchema schema = new MessageSchema (_messageRepository);
 
             var result = await new DocumentExecuter ().ExecuteAsync (_ => {
                 _.Schema = schema;

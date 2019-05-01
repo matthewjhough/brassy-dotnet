@@ -44,10 +44,11 @@ namespace brassy_api {
                 })
                 .AddWebSockets () // Add required services for web socket support
                 .AddDataLoader (); // Add required services for DataLoader support
-            services.AddTransient<Query> ();
-            services.AddTransient<Mutation> ();
-            services.AddTransient<Subscription> ();
+            // services.AddTransient<Query> ();
+            // services.AddTransient<Mutation> ();
+            // services.AddTransient<Subscription> ();
             services.AddTransient<IMessageRepository, MessageRepository> ();
+            services.AddTransient<MessageSchema> ();
             services.AddSingleton<MessageInputType> ();
             services.AddSingleton<MoodType> ();
             services.AddDbContext<BrassyContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));

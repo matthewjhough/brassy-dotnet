@@ -18,9 +18,7 @@ namespace brassy_api.src.Operations {
         }
 
         private MessageModel ResolveMessage (ResolveFieldContext context) {
-            var message = context.Source as MessageModel;
-
-            return message;
+            return context.Source as MessageModel;
         }
 
         private IObservable<MessageModel> Subscribe (ResolveEventStreamContext context) {
