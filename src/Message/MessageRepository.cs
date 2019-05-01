@@ -18,6 +18,15 @@ namespace brassy_api.src.Message {
             _db = db;
             _logger = logger;
         }
+
+        /// <summary>
+        /// Returns observable message stream.
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<MessageModel> Messages () {
+            return _messageStream.AsObservable ();
+        }
+
         public async Task<IEnumerable<MessageModel>> AllMessages () {
             _logger.LogInformation ("Getting all messages...");
             var messages = await _db.Messages.ToListAsync ();
@@ -33,14 +42,6 @@ namespace brassy_api.src.Message {
             _messageStream.OnNext (message);
             await _db.SaveChangesAsync ();
             return addedMessage.Entity;
-        }
-
-        /// <summary>
-        /// Returns observable message stream.
-        /// </summary>
-        /// <returns></returns>
-        public IObservable<MessageModel> Messages () {
-            return _messageStream.AsObservable ();
         }
 
         /// <summary>
