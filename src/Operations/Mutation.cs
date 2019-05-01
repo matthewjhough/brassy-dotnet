@@ -5,9 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace brassy_api.src.Operations {
     public class Mutation : ObjectGraphType {
-        ILogger _logger;
-        public Mutation (IMessageRepository _messageRepository, ILogger<Mutation> logger) {
-            _logger = logger;
+        public Mutation (IMessageRepository _messageRepository) {
             Field<MessageType> (
                 "createMessage",
                 arguments : new QueryArguments (
@@ -16,9 +14,8 @@ namespace brassy_api.src.Operations {
                 resolve : context => {
                     long dateticks = DateTime.Now.Ticks;
                     long datemilliseconds = dateticks / TimeSpan.TicksPerMillisecond;
-                    var message = MessageRepository.AddMoodFormat (context.GetArgument<MessageModel> ("message"));
+                    var message = MessageFormatter.AddMoodFormat (context.GetArgument<MessageModel> ("message"));
                     message.CreatedAt = datemilliseconds;
-                    _logger.LogInformation ($"Mood sent: {message.Mood.ToString()}");
                     return _messageRepository.AddMessage (message);
                 });
         }

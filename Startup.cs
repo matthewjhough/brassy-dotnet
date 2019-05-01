@@ -8,6 +8,7 @@ using brassy_api.src.Mood;
 using brassy_api.src.Operations;
 using GraphiQl;
 using GraphQL;
+using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,12 @@ namespace brassy_api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
+            // Add GraphQL services and configure options
+            services.AddGraphQL (options => {
+                    options.EnableMetrics = true;
+                })
+                .AddWebSockets () // Add required services for web socket support
+                .AddDataLoader (); // Add required services for DataLoader support
             services.AddTransient<Query> ();
             services.AddTransient<Mutation> ();
             services.AddTransient<Subscription> ();
@@ -51,6 +58,11 @@ namespace brassy_api {
         public void Configure (IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BrassyContext db) {
             loggerFactory.AddConsole (Configuration.GetSection ("Logging"));
             loggerFactory.AddDebug ();
+            // this is required for websockets support
+            app.UseWebSockets ();
+
+            // use websocket middleware for MessageSchema at path /graphql
+            app.UseGraphQLWebSockets<MessageSchema> ("/graphql");
             app.UseGraphiQl ();
             app.UseStaticFiles ();
             app.UseMvc ();

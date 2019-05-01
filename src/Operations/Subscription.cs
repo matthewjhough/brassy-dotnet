@@ -24,8 +24,7 @@ namespace brassy_api.src.Operations {
         }
 
         private IObservable<MessageModel> Subscribe (ResolveEventStreamContext context) {
-            var messages = _messageRepository.Messages ();
-            return messages;
+            return _messageRepository.Messages ();
         }
     }
 }
