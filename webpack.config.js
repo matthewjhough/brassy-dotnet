@@ -1,38 +1,56 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-var output = './wwwroot';
+const webpack = require('webpack');
+var output = '/wwwroot';
 
 module.exports = {
+	mode: 'development',
 	entry: {
 		bundle: './GraphiQL/app.js',
 	},
-
 	output: {
-		path: output,
+		path: __dirname + output,
 		filename: '[name].js',
 	},
-
 	resolve: {
-		extensions: ['', '.js', '.json'],
+		extensions: ['flow', '.mjs', 'jsx', '.js', '.json'],
 	},
-
 	module: {
-		loaders: [
-			{ test: /\.js/, loader: 'babel', exclude: /node_modules/ },
-			{
-				test: /\.json$/,
-				loader: 'json-loader',
-			},
+		rules: [
 			{
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract(
-					'style-loader',
-					'css-loader!postcss-loader'
-				),
+				use: ['style-loader', 'css-loader'],
+			},
+			{
+				test: /\.html$/,
+				use: [
+					{
+						loader: 'html-loader',
+					},
+				],
+			},
+			{
+				test: /\.m?js$/,
+				exclude: /(node_modules|bower_components)/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env'],
+					},
+				},
 			},
 		],
 	},
-
-	plugins: [new ExtractTextPlugin('style.css', { allChunks: true })],
+	plugins: [
+		new webpack.DefinePlugin({
+			development: {
+				GRAPHQL_NO_NAME_WARNING: true,
+			},
+			process: {
+				env: 'development',
+			},
+		}),
+		new webpack.ContextReplacementPlugin(
+			/graphql-language-service-interface[\/\\]dist/,
+			/\.js$/
+		),
+	],
 };

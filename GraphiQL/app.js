@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import GraphiQL from 'graphiql';
 import fetch from 'isomorphic-fetch';
-import SubscriptionsTransportWs from 'subscriptions-transport-ws';
-import GraphiQLSubscriptionsFetcher from 'graphiql-subscriptions-fetcher/dist/fetcher';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { graphQLFetcher } from 'graphiql-subscriptions-fetcher/dist/fetcher';
 import 'graphiql/graphiql.css';
 import './app.css';
 
@@ -83,14 +83,11 @@ function updateURL() {
 // Defines a GraphQL fetcher using the fetch API. You're not required to
 // use fetch, and could instead implement graphQLFetcher however you like,
 // as long as it returns a Promise or Observable.
-function graphQLFetcher(graphQLParams) {
+function customGraphQLFetcher(graphQLParams) {
 	// This example expects a GraphQL server at the path /graphql.
 	// Change this to point wherever you host your GraphQL server.
 	return fetch(
-		window.location.protocol +
-			'//' +
-			window.location.host +
-			'@Model.GraphQLEndPoint',
+		window.location.protocol + '//' + window.location.host + '/graphql',
 		{
 			method: 'post',
 			headers: {
@@ -113,14 +110,17 @@ function graphQLFetcher(graphQLParams) {
 		});
 }
 
-// Enable Subscriptions via WebSocket
-var subscriptionsClient = new SubscriptionsTransportWs.SubscriptionClient(
+const subscriptionsClient = new SubscriptionClient(
 	(window.location.protocol === 'http:' ? 'ws://' : 'wss://') +
 		window.location.host +
-		'/subscriptions',
-	{ reconnect: true }
+		'/graphql',
+	{
+		reconnect: true,
+	}
 );
-var subscriptionsFetcher = GraphiQLSubscriptionsFetcher.graphQLFetcher(
+
+// on hold
+const subscriptionsFetcher = graphQLFetcher(
 	subscriptionsClient,
 	graphQLFetcher
 );
@@ -131,7 +131,7 @@ var subscriptionsFetcher = GraphiQLSubscriptionsFetcher.graphQLFetcher(
 // additional child elements.
 ReactDOM.render(
 	React.createElement(GraphiQL, {
-		fetcher: subscriptionsFetcher,
+		fetcher: customGraphQLFetcher,
 		query: parameters.query,
 		variables: parameters.variables,
 		operationName: parameters.operationName,

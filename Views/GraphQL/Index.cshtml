@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width" />
     <title>GraphiQL</title>
     <link rel="stylesheet" href="~/style.css" />
+    <style>
+        #graphiql {
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="graphiql"></div>
+    <script>var development = { GRAPHQL_NO_NAME_WARNING: true };</script>
     <script src="~/bundle.js" type="text/javascript"></script>
-    <script>console.log("Using static files...")</script>
 </body>
 </html>
