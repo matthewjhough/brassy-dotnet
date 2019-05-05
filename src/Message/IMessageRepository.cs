@@ -6,6 +6,6 @@ namespace brassy_api.src.Message {
     public interface IMessageRepository {
         Task<IEnumerable<MessageModel>> AllMessages ();
         Task<MessageModel> AddMessage (MessageModel message);
-        IObservable<MessageModel> Messages ();
+        IObservable<MessageModel> MessageCreated ();
     }
 }

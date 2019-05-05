@@ -16,7 +16,10 @@ namespace brassy_api.src.Operations {
                     long datemilliseconds = dateticks / TimeSpan.TicksPerMillisecond;
                     var message = MessageFormatter.AddMoodFormat (context.GetArgument<MessageModel> ("message"));
                     message.CreatedAt = datemilliseconds;
-                    return _messageRepository.AddMessage (message);
+                    message.Id = Guid.NewGuid ().ToString ();
+
+                    var addedMessage = _messageRepository.AddMessage (message);
+                    return addedMessage;
                 });
         }
     }

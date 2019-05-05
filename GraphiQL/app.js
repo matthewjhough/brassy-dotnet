@@ -119,12 +119,9 @@ const subscriptionsClient = new SubscriptionClient(
 	}
 );
 
-console.log(subscriptionsClient, window.location.host);
-
 const subscriptionsFetcher = graphQLFetcher(
 	subscriptionsClient,
 	customGraphQLFetcher
-	//graphQLFetcher
 );
 
 // Render <GraphiQL /> into the body.

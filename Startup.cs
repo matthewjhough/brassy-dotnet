@@ -43,6 +43,7 @@ namespace brassy_api {
 
             services.AddTransient<IMessageRepository, MessageRepository> ()
                 .AddTransient<MessageSchema> ()
+                .AddTransient<Subscription> ()
                 .AddTransient<MessageInputType> ()
                 .AddSingleton<MoodType> ();
 
@@ -67,9 +68,6 @@ namespace brassy_api {
         ) {
             loggerFactory.AddConsole (Configuration.GetSection ("Logging"));
             loggerFactory.AddDebug ();
-            // .UseDefaultFiles ()
-            // .UseGraphiQl ()
-            // .UseGraphQL ()
 
             app.UseWebSockets ();
             app.UseGraphQLWebSockets<MessageSchema> ("/graphql");
