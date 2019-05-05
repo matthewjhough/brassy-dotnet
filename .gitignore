@@ -2,3 +2,4 @@ obj
 bin
 /.EntityFrameworkMigrations
 /node_modules
+.vscode

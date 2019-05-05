@@ -17,25 +17,19 @@ namespace brassy_api.src.Message {
 
         private readonly ILogger _logger;
 
-        private readonly ISubject<MessageModel> _messageStream = new ReplaySubject<MessageModel> (1);
+        public ConcurrentStack<MessageModel> _allMessages { get; }
 
-        // private readonly ISubject<List<MessageModel>> _allMessageStream = new ReplaySubject<List<MessageModel>> (1);
+        private readonly ISubject<MessageModel> _messageObserver = new ReplaySubject<MessageModel> (100);
 
-        public ConcurrentStack<MessageModel> _messageStack { get; }
-
+        /// <summary>
+        /// Message Repository constructor
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="logger"></param>
         public MessageRepository (BrassyContext db, ILogger<MessageRepository> logger) {
             _db = db;
             _logger = logger;
-            _messageStack = new ConcurrentStack<MessageModel> ();
-        }
-
-        /// <summary>
-        /// Returns observable message stream.
-        /// </summary>
-        /// <returns></returns>
-        public IObservable<MessageModel> Messages () {
-            _logger.LogInformation (_messageStream.ToString ());
-            return _messageStream.AsObservable ();
+            _allMessages = new ConcurrentStack<MessageModel> ();
         }
 
         /// <summary>
@@ -45,7 +39,9 @@ namespace brassy_api.src.Message {
         public async Task<IEnumerable<MessageModel>> AllMessages () {
             _logger.LogInformation ("Getting all messages...");
             var messages = await _db.Messages.ToListAsync ();
-            var formattedMessages = MessageFormatter.FormatMessages (messages).OrderByDescending (msg => msg.CreatedAt);
+            var formattedMessages = MessageFormatter
+                .FormatMessages (messages)
+                .OrderByDescending (msg => msg.CreatedAt);
 
             return formattedMessages;
         }
@@ -60,10 +56,19 @@ namespace brassy_api.src.Message {
             var addedMessage = await _db.Messages.AddAsync (message);
             await _db.SaveChangesAsync ();
             // send message to Observable stream.
-            _messageStack.Push (message);
-            _messageStream.OnNext (message);
+            _allMessages.Push (message);
+            _messageObserver.OnNext (message);
 
             return addedMessage.Entity;
+        }
+
+        /// <summary>
+        /// Returns observable message stream.
+        /// </summary>
+        /// <returns></returns>
+        public IObservable<MessageModel> Messages () {
+            _logger.LogInformation (_messageObserver.ToString ());
+            return _messageObserver.AsObservable ();
         }
 
     }

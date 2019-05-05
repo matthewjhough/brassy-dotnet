@@ -9,19 +9,19 @@ namespace brassy_api.src.Operations {
         private readonly IMessageRepository _messageRepository;
         public Subscription (IMessageRepository messageRepository) {
             _messageRepository = messageRepository;
+            Name = "Subscription";
+            Description = "Observable stream of items added to the database";
             AddField (new EventStreamFieldType {
                 Name = "messageAdded",
                     Type = typeof (MessageType),
-                    Resolver = new FuncFieldResolver<MessageModel> (ResolveMessage),
-                    Subscriber = new EventStreamResolver<MessageModel> (Subscribe)
+                    Resolver = new FuncFieldResolver<MessageModel> (
+                        context => context.Source as MessageModel
+                    ),
+                    Subscriber = new EventStreamResolver<MessageModel> (SubscribeToMessages)
             });
         }
 
-        private MessageModel ResolveMessage (ResolveFieldContext context) {
-            return context.Source as MessageModel;
-        }
-
-        private IObservable<MessageModel> Subscribe (ResolveEventStreamContext context) {
+        private IObservable<MessageModel> SubscribeToMessages (ResolveEventStreamContext context) {
             return _messageRepository.Messages ();
         }
     }

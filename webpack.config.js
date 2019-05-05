@@ -5,7 +5,7 @@ var output = './wwwroot';
 
 module.exports = {
 	entry: {
-		bundle: './src/Views/GraphQL/app.js',
+		bundle: './GraphiQL/app.js',
 	},
 
 	output: {
@@ -20,6 +20,10 @@ module.exports = {
 	module: {
 		loaders: [
 			{ test: /\.js/, loader: 'babel', exclude: /node_modules/ },
+			{
+				test: /\.json$/,
+				loader: 'json-loader',
+			},
 			{
 				test: /\.css$/,
 				loader: ExtractTextPlugin.extract(

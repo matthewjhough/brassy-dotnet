@@ -9,6 +9,8 @@ using brassy_api.src.Operations;
 using GraphiQl;
 using GraphQL;
 using GraphQL.Server;
+using GraphQL.Server.Transports.AspNetCore;
+using GraphQL.Server.Transports.WebSockets;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,36 +40,41 @@ namespace brassy_api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
-            // Add GraphQL services and configure options
+
+            services.AddTransient<IMessageRepository, MessageRepository> ()
+                .AddTransient<MessageSchema> ()
+                .AddTransient<MessageInputType> ()
+                .AddSingleton<MoodType> ();
+
+            services
+                .AddDbContext<BrassyContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
+
             services.AddGraphQL (options => {
                     options.EnableMetrics = true;
                 })
-                .AddWebSockets () // Add required services for web socket support
-                .AddDataLoader (); // Add required services for DataLoader support
-            // services.AddTransient<Query> ();
-            // services.AddTransient<Mutation> ();
-            // services.AddTransient<Subscription> ();
-            services.AddTransient<IMessageRepository, MessageRepository> ();
-            services.AddTransient<MessageSchema> ();
-            services.AddSingleton<MessageInputType> ();
-            services.AddSingleton<MoodType> ();
-            services.AddDbContext<BrassyContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
+                .AddWebSockets ()
+                .AddDataLoader ();
+
             services.AddMvc ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, BrassyContext db) {
+        public void Configure (
+            IApplicationBuilder app,
+            IHostingEnvironment env,
+            ILoggerFactory loggerFactory,
+            BrassyContext db
+        ) {
             loggerFactory.AddConsole (Configuration.GetSection ("Logging"));
             loggerFactory.AddDebug ();
-            // this is required for websockets support
-            app.UseWebSockets ();
+            // .UseDefaultFiles ()
+            // .UseGraphiQl ()
+            // .UseGraphQL ()
+            // .UseGraphQLWebSockets<MessageSchema> ("/subscriptions");
 
-            // use websocket middleware for MessageSchema at path /graphql
-            app.UseGraphQLWebSockets<MessageSchema> ("/graphql");
-            app.UseGraphiQl ();
+            app.UseWebSockets ();
             app.UseStaticFiles ();
             app.UseMvc ();
-
             db.EnsureSeedData ();
         }
     }
