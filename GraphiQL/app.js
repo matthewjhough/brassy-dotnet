@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import GraphiQL from 'graphiql';
 import fetch from 'isomorphic-fetch';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { SubscriptionClient } from 'subscriptions-transport-ws/dist/client';
 import { graphQLFetcher } from 'graphiql-subscriptions-fetcher/dist/fetcher';
 import 'graphiql/graphiql.css';
 import './app.css';
@@ -119,10 +119,12 @@ const subscriptionsClient = new SubscriptionClient(
 	}
 );
 
-// on hold
+console.log(subscriptionsClient, window.location.host);
+
 const subscriptionsFetcher = graphQLFetcher(
 	subscriptionsClient,
-	graphQLFetcher
+	customGraphQLFetcher
+	//graphQLFetcher
 );
 
 // Render <GraphiQL /> into the body.
@@ -131,7 +133,7 @@ const subscriptionsFetcher = graphQLFetcher(
 // additional child elements.
 ReactDOM.render(
 	React.createElement(GraphiQL, {
-		fetcher: customGraphQLFetcher,
+		fetcher: subscriptionsFetcher,
 		query: parameters.query,
 		variables: parameters.variables,
 		operationName: parameters.operationName,

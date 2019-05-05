@@ -70,9 +70,9 @@ namespace brassy_api {
             // .UseDefaultFiles ()
             // .UseGraphiQl ()
             // .UseGraphQL ()
-            // .UseGraphQLWebSockets<MessageSchema> ("/subscriptions");
 
             app.UseWebSockets ();
+            app.UseGraphQLWebSockets<MessageSchema> ("/graphql");
             app.UseStaticFiles ();
             app.UseMvc ();
             db.EnsureSeedData ();
