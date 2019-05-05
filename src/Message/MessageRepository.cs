@@ -81,7 +81,7 @@ namespace brassy_api.src.Message {
             );
             _logger.LogInformation ("*** Creating Watchable Observable... ***");
 
-            return _messageStream.AsObservable ();
+            return _messageStream.Select (x => x).AsObservable ();
         }
 
     }

@@ -41,20 +41,22 @@ namespace brassy_api {
         public void ConfigureServices (IServiceCollection services) {
             services.AddScoped<IDocumentExecuter, DocumentExecuter> ();
 
-            services.AddTransient<IMessageRepository, MessageRepository> ()
-                .AddTransient<MessageSchema> ()
-                .AddTransient<Subscription> ()
-                .AddTransient<MessageInputType> ()
+            services.AddSingleton<IMessageRepository, MessageRepository> ()
+                .AddSingleton<MessageSchema> ()
+                .AddSingleton<Query> ()
+                .AddSingleton<Mutation> ()
+                .AddSingleton<Subscription> ()
+                .AddSingleton<MessageInputType> ()
                 .AddSingleton<MoodType> ();
-
-            services
-                .AddDbContext<BrassyContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
 
             services.AddGraphQL (options => {
                     options.EnableMetrics = true;
                 })
                 .AddWebSockets ()
                 .AddDataLoader ();
+
+            services
+                .AddDbContext<BrassyContext> (options => options.UseSqlServer (Configuration["ConnectionStrings:BrassyDatabaseConnection"]));
 
             services.AddMvc ();
         }
